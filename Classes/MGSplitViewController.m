@@ -838,7 +838,7 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 
 - (void)setMasterViewController:(UIViewController *)master
 {
-	if (!master) {
+	if (_masterViewController) {
         [_masterViewController.view removeFromSuperview];
     }
 
@@ -850,7 +850,7 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 
 - (void)setDetailViewController:(UIViewController *)detail
 {
-    if (!detail) {
+    if (_detailViewController) {
         [_detailViewController.view removeFromSuperview];
     }
 
