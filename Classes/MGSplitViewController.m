@@ -10,18 +10,17 @@
 #import "MGSplitDividerView.h"
 #import "MGSplitCornersView.h"
 
-#define MG_DEFAULT_SPLIT_POSITION		320.0	// default width of master view in UISplitViewController.
-#define MG_DEFAULT_SPLIT_WIDTH			1.0		// default width of split-gutter in UISplitViewController.
-#define MG_DEFAULT_CORNER_RADIUS		5.0		// default corner-radius of overlapping split-inner corners on the master and detail views.
-#define MG_DEFAULT_CORNER_COLOR			[UIColor blackColor]	// default color of intruding inner corners (and divider background).
+CGFloat const kMGDefaultSplitPosition        = 320.f;                  // default width of master view in UISplitViewController.
+CGFloat const kMGDefaultSplitWidth           = 1.f;                    // default width of split-gutter in UISplitViewController.
+CGFloat const kMGDefaultCornerRadius         = 5.f;                    // default corner-radius of overlapping split-inner corners on the master and detail views.
+#define kMGDefaultCornerColor                  [UIColor blackColor];   // default color of intruding inner corners (and divider background).
 
-#define MG_PANESPLITTER_CORNER_RADIUS	0.0		// corner-radius of split-inner corners for MGSplitViewDividerStylePaneSplitter style.
-#define MG_PANESPLITTER_SPLIT_WIDTH		25.0	// width of split-gutter for MGSplitViewDividerStylePaneSplitter style.
+CGFloat const kMGPaneSplitterCornerRadius    = 0.f;                    // corner-radius of split-inner corners for MGSplitViewDividerStylePaneSplitter style.
+CGFloat const kMGPaneSplitterSplitWidth      = 25.f;                   // width of split-gutter for MGSplitViewDividerStylePaneSplitter style.
+CGFloat const kMGMinViewWidth                = 200.f;                  // minimum width a view is allowed to become as a result of changing the splitPosition.
 
-#define MG_MIN_VIEW_WIDTH				200.0	// minimum width a view is allowed to become as a result of changing the splitPosition.
-
-#define MG_ANIMATION_CHANGE_SPLIT_ORIENTATION	@"ChangeSplitOrientation"	// Animation ID for internal use.
-#define MG_ANIMATION_CHANGE_SUBVIEWS_ORDER		@"ChangeSubviewsOrder"	// Animation ID for internal use.
+NSString* kMGChangeSplitOrientationAnimation = @"ChangeSplitOrientation"; // Animation ID for internal use.
+NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animation ID for internal use.
 
 
 @interface MGSplitViewController ()
@@ -115,13 +114,13 @@
 - (void)setup
 {
 	// Configure default behaviour.
-	self.splitWidth = MG_DEFAULT_SPLIT_WIDTH;
+	self.splitWidth = kMGDefaultSplitWidth;
 	self.showsMasterInPortrait = NO;
 	self.showsMasterInLandscape = YES;
 	self.reconfigurePopup = NO;
 	self.vertical = YES;
 	self.masterBeforeDetail = YES;
-	self.splitPosition = MG_DEFAULT_SPLIT_POSITION;
+	self.splitPosition = kMGDefaultSplitPosition;
 	CGRect divRect = self.view.bounds;
 	if (self.vertical) {
 		divRect.origin.y = self.splitPosition;
@@ -132,7 +131,7 @@
 	}
 	self.dividerView = [[MGSplitDividerView alloc] initWithFrame:divRect];
 	self.dividerView.splitViewController = self;
-	self.dividerView.backgroundColor = MG_DEFAULT_CORNER_COLOR;
+	self.dividerView.backgroundColor = kMGDefaultCornerColor;
 	self.dividerStyle = MGSplitViewDividerStyleThin;
 }
 
@@ -414,12 +413,12 @@
 		CGRect cornerRect = CGRectMake(0, 0, 10, 10); // arbitrary, will be resized below.
 		leadingCorners = [[MGSplitCornersView alloc] initWithFrame:cornerRect];
 		leadingCorners.splitViewController = self;
-		leadingCorners.cornerBackgroundColor = MG_DEFAULT_CORNER_COLOR;
-		leadingCorners.cornerRadius = MG_DEFAULT_CORNER_RADIUS;
+		leadingCorners.cornerBackgroundColor = kMGDefaultCornerColor;
+		leadingCorners.cornerRadius = kMGDefaultCornerRadius;
 		trailingCorners = [[MGSplitCornersView alloc] initWithFrame:cornerRect];
 		trailingCorners.splitViewController = self;
-		trailingCorners.cornerBackgroundColor = MG_DEFAULT_CORNER_COLOR;
-		trailingCorners.cornerRadius = MG_DEFAULT_CORNER_RADIUS;
+		trailingCorners.cornerBackgroundColor = kMGDefaultCornerColor;
+		trailingCorners.cornerRadius = kMGDefaultCornerRadius;
 		self.cornerViews = @[leadingCorners, trailingCorners];
 		
 	} else if (self.cornerViews.count == 2) {
@@ -605,8 +604,8 @@
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
-	if (([animationID isEqualToString:MG_ANIMATION_CHANGE_SPLIT_ORIENTATION] || 
-		 [animationID isEqualToString:MG_ANIMATION_CHANGE_SUBVIEWS_ORDER])
+	if (([animationID isEqualToString:kMGChangeSplitOrientationAnimation] || 
+		 [animationID isEqualToString:kMGChangeSubviewsOrderAnimation])
 		&& self.cornerViews) {
 		for (UIView *corner in self.cornerViews) {
 			corner.hidden = NO;
@@ -630,7 +629,7 @@
 			}
 			self.dividerView.hidden = YES;
 		}
-		[UIView beginAnimations:MG_ANIMATION_CHANGE_SPLIT_ORIENTATION context:nil];
+		[UIView beginAnimations:kMGChangeSplitOrientationAnimation context:nil];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
 	}
@@ -651,7 +650,7 @@
 			}
 			self.dividerView.hidden = YES;
 		}
-		[UIView beginAnimations:MG_ANIMATION_CHANGE_SUBVIEWS_ORDER context:nil];
+		[UIView beginAnimations:kMGChangeSubviewsOrderAnimation context:nil];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
 	}
@@ -791,8 +790,8 @@
 		
 	} else {
 		// Apply default constraints if delegate doesn't wish to participate.
-		float minPos = MG_MIN_VIEW_WIDTH;
-		float maxPos = ((self.vertical) ? fullSize.width : fullSize.height) - (MG_MIN_VIEW_WIDTH + self.splitWidth);
+		float minPos = kMGMinViewWidth;
+		float maxPos = ((self.vertical) ? fullSize.width : fullSize.height) - (kMGMinViewWidth + self.splitWidth);
 		constrained = (newPosn != _splitPosition && newPosn >= minPos && newPosn <= maxPos);
 	}
 	
@@ -867,7 +866,7 @@
 		[_dividerView removeFromSuperview];
 		_dividerView = divider;
 		_dividerView.splitViewController = self;
-		_dividerView.backgroundColor = MG_DEFAULT_CORNER_COLOR;
+		_dividerView.backgroundColor = kMGDefaultCornerColor;
 		if ([self isShowingMaster]) {
 			[self layoutSubviews];
 		}
@@ -905,13 +904,13 @@
 	// Reconfigure general appearance and behaviour.
 	float cornerRadius;
 	if (_dividerStyle == MGSplitViewDividerStyleThin) {
-		cornerRadius = MG_DEFAULT_CORNER_RADIUS;
-		_splitWidth = MG_DEFAULT_SPLIT_WIDTH;
+		cornerRadius = kMGDefaultCornerRadius;
+		_splitWidth = kMGDefaultSplitWidth;
 		self.allowsDraggingDivider = NO;
 		
 	} else if (_dividerStyle == MGSplitViewDividerStylePaneSplitter) {
-		cornerRadius = MG_PANESPLITTER_CORNER_RADIUS;
-		_splitWidth = MG_PANESPLITTER_SPLIT_WIDTH;
+		cornerRadius = kMGPaneSplitterCornerRadius;
+		_splitWidth = kMGPaneSplitterSplitWidth;
 		self.allowsDraggingDivider = YES;
 	}
 	
