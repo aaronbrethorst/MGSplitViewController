@@ -902,9 +902,9 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 	_dividerStyle = newStyle;
 	
 	// Reconfigure general appearance and behaviour.
-	float cornerRadius;
+	CGFloat cornerRadius = kMGDefaultCornerRadius;
+    
 	if (_dividerStyle == MGSplitViewDividerStyleThin) {
-		cornerRadius = kMGDefaultCornerRadius;
 		_splitWidth = kMGDefaultSplitWidth;
 		self.allowsDraggingDivider = NO;
 		
