@@ -149,12 +149,18 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (self.detailViewController)
-    {
+    if (self.masterViewController && self.detailViewController) {
+        return [self.masterViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation] && [self.detailViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    }
+    else if (self.masterViewController) {
+        return [self.masterViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    }
+    else if (self.detailViewController) {
         return [self.detailViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
     }
-
-    return YES;
+    else {
+        return YES;
+    }
 }
 
 
