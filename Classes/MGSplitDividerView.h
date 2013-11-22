@@ -9,14 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class MGSplitViewController;
-@interface MGSplitDividerView : UIView {
-	MGSplitViewController *__weak splitViewController;
-	BOOL allowsDragging;
-}
 
-@property (nonatomic, weak) MGSplitViewController *splitViewController; // weak ref.
-@property (nonatomic, assign) BOOL allowsDragging;
+@interface MGSplitDividerView : UIView
+@property (nonatomic, weak) MGSplitViewController *splitViewController;
 
 - (void)drawGripThumbInRect:(CGRect)rect;
-
 @end

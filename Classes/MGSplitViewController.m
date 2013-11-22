@@ -886,7 +886,7 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 - (BOOL)allowsDraggingDivider
 {
 	if (self.dividerView) {
-		return self.dividerView.allowsDragging;
+		return self.dividerView.userInteractionEnabled;
 	}
 	
 	return NO;
@@ -896,7 +896,7 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 - (void)setAllowsDraggingDivider:(BOOL)flag
 {
 	if (self.allowsDraggingDivider != flag && self.dividerView) {
-		self.dividerView.allowsDragging = flag;
+		self.dividerView.userInteractionEnabled = flag;
 	}
 }
 

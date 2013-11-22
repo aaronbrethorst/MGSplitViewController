@@ -21,7 +21,6 @@
 {
 	if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = NO;
-		self.allowsDragging = NO;
 		self.contentMode = UIViewContentModeRedraw;
 	}
 	return self;
@@ -40,10 +39,11 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	if (splitViewController.dividerStyle == MGSplitViewDividerStyleThin) {
+	if (self.splitViewController.dividerStyle == MGSplitViewDividerStyleThin) {
 		[super drawRect:rect];
 		
-	} else if (splitViewController.dividerStyle == MGSplitViewDividerStylePaneSplitter) {
+	}
+    else if (self.splitViewController.dividerStyle == MGSplitViewDividerStylePaneSplitter) {
 		// Draw gradient background.
 		CGRect bounds = self.bounds;
 		CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
@@ -53,16 +53,19 @@
 		CGGradientRef gradient = CGGradientCreateWithColorComponents (rgb, components, locations, 2);
 		CGContextRef context = UIGraphicsGetCurrentContext();
 		CGPoint start, end;
-		if (splitViewController.vertical) {
+
+		if (self.splitViewController.vertical) {
 			// Light left to dark right.
 			start = CGPointMake(CGRectGetMinX(bounds), CGRectGetMidY(bounds));
 			end = CGPointMake(CGRectGetMaxX(bounds), CGRectGetMidY(bounds));
-		} else {
+		}
+        else {
 			// Light top to dark bottom.
 			start = CGPointMake(CGRectGetMidX(bounds), CGRectGetMinY(bounds));
 			end = CGPointMake(CGRectGetMidX(bounds), CGRectGetMaxY(bounds));
 		}
-		CGContextDrawLinearGradient(context, gradient, start, end, 0);
+
+        CGContextDrawLinearGradient(context, gradient, start, end, 0);
 		CGColorSpaceRelease(rgb);
 		CGGradientRelease(gradient);
 		
@@ -70,13 +73,14 @@
 		float borderThickness = 1.0;
 		[[UIColor colorWithWhite:0.7 alpha:1.0] set];
 		CGRect borderRect = bounds;
-		if (splitViewController.vertical) {
+
+        if (self.splitViewController.vertical) {
 			borderRect.size.width = borderThickness;
 			UIRectFill(borderRect);
 			borderRect.origin.x = CGRectGetMaxX(bounds) - borderThickness;
 			UIRectFill(borderRect);
-			
-		} else {
+		}
+        else {
 			borderRect.size.height = borderThickness;
 			UIRectFill(borderRect);
 			borderRect.origin.y = CGRectGetMaxY(bounds) - borderThickness;
@@ -93,7 +97,7 @@
 {
 	float width = 9.0;
 	float height;
-	if (splitViewController.vertical) {
+	if (self.splitViewController.vertical) {
 		height = 30.0;
 	} else {
 		height = width;
@@ -109,7 +113,8 @@
 	UIColor *stripColor = [UIColor colorWithWhite:0.35 alpha:1.0];
 	UIColor *lightColor = [UIColor colorWithWhite:1.0 alpha:1.0];
 	float space = 3.0;
-	if (splitViewController.vertical) {
+
+	if (self.splitViewController.vertical) {
 		gripRect.size.width = stripThickness;
 		[stripColor set];
 		UIRectFill(gripRect);
@@ -186,30 +191,12 @@
 	if (touch) {
 		CGPoint lastPt = [touch previousLocationInView:self];
 		CGPoint pt = [touch locationInView:self];
-		float offset = (splitViewController.vertical) ? pt.x - lastPt.x : pt.y - lastPt.y;
-		if (!splitViewController.masterBeforeDetail) {
+		float offset = (self.splitViewController.vertical) ? pt.x - lastPt.x : pt.y - lastPt.y;
+		if (!self.splitViewController.masterBeforeDetail) {
 			offset = -offset;
 		}
-		splitViewController.splitPosition = splitViewController.splitPosition + offset;
+		self.splitViewController.splitPosition = self.splitViewController.splitPosition + offset;
 	}
 }
-
-
-#pragma mark -
-#pragma mark Accessors and properties
-
-
-- (void)setAllowsDragging:(BOOL)flag
-{
-	if (flag != allowsDragging) {
-		allowsDragging = flag;
-		self.userInteractionEnabled = allowsDragging;
-	}
-}
-
-
-@synthesize splitViewController;
-@synthesize allowsDragging;
-
 
 @end
