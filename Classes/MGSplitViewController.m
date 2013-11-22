@@ -430,11 +430,11 @@
 		trailingCorners.splitViewController = self;
 		trailingCorners.cornerBackgroundColor = MG_DEFAULT_CORNER_COLOR;
 		trailingCorners.cornerRadius = MG_DEFAULT_CORNER_RADIUS;
-		_cornerViews = [[NSArray alloc] initWithObjects:leadingCorners, trailingCorners, nil];
+		_cornerViews = @[leadingCorners, trailingCorners];
 		
 	} else if ([_cornerViews count] == 2) {
-		leadingCorners = [_cornerViews objectAtIndex:0];
-		trailingCorners = [_cornerViews objectAtIndex:1];
+		leadingCorners = _cornerViews[0];
+		trailingCorners = _cornerViews[1];
 	}
 	
 	// Configure and layout the corner-views.
@@ -931,8 +931,8 @@
 		}
 		_viewControllers = [[NSMutableArray alloc] initWithCapacity:2];
 		if (controllers && [controllers count] >= 2) {
-			self.masterViewController = [controllers objectAtIndex:0];
-			self.detailViewController = [controllers objectAtIndex:1];
+			self.masterViewController = controllers[0];
+			self.detailViewController = controllers[1];
 		} else {
 			NSLog(@"Error: %@ requires 2 view-controllers. (%@)", NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 		}
@@ -945,7 +945,7 @@
 - (UIViewController *)masterViewController
 {
 	if (_viewControllers && [_viewControllers count] > 0) {
-		NSObject *controller = [_viewControllers objectAtIndex:0];
+		NSObject *controller = _viewControllers[0];
 		if ([controller isKindOfClass:[UIViewController class]]) {
 			return (UIViewController *)controller;
 		}
@@ -968,10 +968,10 @@
 	
 	BOOL changed = YES;
 	if ([_viewControllers count] > 0) {
-		if ([_viewControllers objectAtIndex:0] == newMaster) {
+		if (_viewControllers[0] == newMaster) {
 			changed = NO;
 		} else {
-			[_viewControllers replaceObjectAtIndex:0 withObject:newMaster];
+			_viewControllers[0] = newMaster;
 		}
 		
 	} else {
@@ -987,7 +987,7 @@
 - (UIViewController *)detailViewController
 {
 	if (_viewControllers && [_viewControllers count] > 1) {
-		NSObject *controller = [_viewControllers objectAtIndex:1];
+		NSObject *controller = _viewControllers[1];
 		if ([controller isKindOfClass:[UIViewController class]]) {
 			return (UIViewController *)controller;
 		}
@@ -1006,10 +1006,10 @@
 	
 	BOOL changed = YES;
 	if ([_viewControllers count] > 1) {
-		if ([_viewControllers objectAtIndex:1] == detail) {
+		if (_viewControllers[1] == detail) {
 			changed = NO;
 		} else {
-			[_viewControllers replaceObjectAtIndex:1 withObject:detail];
+			_viewControllers[1] = detail;
 		}
 		
 	} else {
