@@ -24,13 +24,7 @@
 {
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = NO;
-
-    if ([self respondsToSelector:@selector(setPreferredContentSize:)]) {
-        [self performSelector:@selector(setPreferredContentSize:) withObject:[NSValue valueWithCGSize:CGSizeMake(320.f, 600.f)]];
-    }
-    else {
-        [self performSelector:@selector(setContentSizeForViewInPopover:) withObject:[NSValue valueWithCGSize:CGSizeMake(320.0, 600.0)]];
-    }
+    self.contentSizeForViewInPopover = CGSizeMake(320, 600);
 }
 
 
