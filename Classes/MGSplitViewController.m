@@ -506,6 +506,9 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 		[self.masterViewController viewDidAppear:animated];
 	}
 	[self.detailViewController viewDidAppear:animated];
+
+    // TODO: add this here and remove from L497 per https://github.com/mattgemmell/MGSplitViewController/pull/73 ?
+    [self layoutSubviews];
 }
 
 
