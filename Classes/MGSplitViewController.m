@@ -698,17 +698,34 @@
 
 - (IBAction)showMasterPopover:(id)sender
 {
-	if (_hiddenPopoverController && !(_hiddenPopoverController.popoverVisible)) {
-		// Inform delegate.
-		if (_delegate && [_delegate respondsToSelector:@selector(splitViewController:popoverController:willPresentViewController:)]) {
-			[(NSObject <MGSplitViewControllerDelegate> *)_delegate splitViewController:self 
-																	 popoverController:_hiddenPopoverController 
-															 willPresentViewController:self.masterViewController];
-		}
-		
-		// Show popover.
-		[_hiddenPopoverController presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    if (_hiddenPopoverController) {
+
+        if (_hiddenPopoverController.popoverVisible) {
+            [_hiddenPopoverController dismissPopoverAnimated:YES];
+        }
+        else {
+            // Inform delegate.
+            if (_delegate && [_delegate respondsToSelector:@selector(splitViewController:popoverController:willPresentViewController:)]) {
+                [(NSObject <MGSplitViewControllerDelegate> *)_delegate splitViewController:self
+                                                                         popoverController:_hiddenPopoverController
+                                                                 willPresentViewController:self.masterViewController];
+            }
+
+            // Show popover.
+            [_hiddenPopoverController presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        }
 	}
+//	if (_hiddenPopoverController && !(_hiddenPopoverController.popoverVisible)) {
+//		// Inform delegate.
+//		if (_delegate && [_delegate respondsToSelector:@selector(splitViewController:popoverController:willPresentViewController:)]) {
+//			[(NSObject <MGSplitViewControllerDelegate> *)_delegate splitViewController:self 
+//																	 popoverController:_hiddenPopoverController 
+//															 willPresentViewController:self.masterViewController];
+//		}
+//		
+//		// Show popover.
+//		[_hiddenPopoverController presentPopoverFromBarButtonItem:_barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+//	}
 }
 
 
