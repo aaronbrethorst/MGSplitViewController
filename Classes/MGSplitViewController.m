@@ -90,24 +90,9 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 #pragma mark -
 #pragma mark Setup and Teardown
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-		[self setup];
-	}
-
-	return self;
-}
-
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-	if ((self = [super initWithCoder:aDecoder])) {
-		[self setup];
-	}
-
-	return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setup];
 }
 
 
