@@ -90,24 +90,9 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 #pragma mark -
 #pragma mark Setup and Teardown
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
-		[self setup];
-	}
-
-	return self;
-}
-
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-	if ((self = [super initWithCoder:aDecoder])) {
-		[self setup];
-	}
-
-	return self;
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self setup];
 }
 
 
@@ -827,12 +812,14 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 
 - (void)setMasterViewController:(UIViewController *)master
 {
-	if (_masterViewController) {
+    if (_masterViewController) {
         [_masterViewController.view removeFromSuperview];
+        [_masterViewController removeFromParentViewController];
     }
 
     if (_masterViewController != master) {
         _masterViewController = master;
+        [self addChildViewController:_masterViewController];
         [self layoutSubviews];
     }
 }
@@ -841,10 +828,12 @@ NSString* kMGChangeSubviewsOrderAnimation    = @"ChangeSubviewsOrder"; // Animat
 {
     if (_detailViewController) {
         [_detailViewController.view removeFromSuperview];
+        [_detailViewController removeFromParentViewController];
     }
 
     if (_detailViewController != detail) {
         _detailViewController = detail;
+        [self addChildViewController:_detailViewController];
         [self layoutSubviews];
     }
 }
